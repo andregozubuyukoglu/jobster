@@ -7,6 +7,7 @@ import {
   handleChange,
   createJob,
 } from "../../features/job/jobSlice"
+import { useEffect } from "react"
 
 const AddJob = () => {
   const {
@@ -21,6 +22,7 @@ const AddJob = () => {
     isEditing,
     editJobId,
   } = useSelector((store) => store.job)
+  const { user } = useSelector((store) => store.user)
 
   const dispatch = useDispatch()
 
@@ -39,6 +41,12 @@ const AddJob = () => {
     const value = e.target.value
     dispatch(handleChange({ name, value }))
   }
+
+  useEffect(() => {
+    if (!isEditing) {
+      dispatch(handleChange({ name: "jobLocation", value: user.location }))
+    }
+  }, [])
 
   return (
     <Wrapper>
